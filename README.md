@@ -102,3 +102,9 @@
     ```sh
     $service gsocket start
     ```
+## 开发环境
+Golang `1.6+`
+VSCode
+
+## LICENSE
+[MIT](LICENSE)
