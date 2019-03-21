@@ -1,0 +1,10 @@
+/pkg
+/debug
+/gosocket.exe
+/gosocket
+/.DS_Store
+*/.DS_Store
+debug.test.exe
+debug.exe
+*.log
+*.exe

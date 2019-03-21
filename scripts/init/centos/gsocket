@@ -1,0 +1,93 @@
+#!/bin/sh
+#
+#       /etc/rc.d/init.d/gsocket
+#
+#       Runs the gsocket Service.
+#       
+#
+# chkconfig:   - 85 15 
+#
+
+### BEGIN INIT INFO
+# Provides:          gsocket
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start gsocket at boot time.
+# Description:       Control gsocket.
+### END INIT INFO
+
+# Source function library.
+. /etc/init.d/functions
+
+# Default values
+
+NAME=gsocket
+NN_HOME=/home/gsocket/gsocket
+NN_PATH=${NN_HOME}/$NAME
+NN_USER=gsocket
+SERVICENAME="gsocket service"
+LOCKFILE=/var/lock/subsys/gsocket
+LOGPATH=${NN_HOME}/log
+LOGFILE=${LOGPATH}/vservice.log
+RETVAL=0
+
+# Read configuration from /etc/sysconfig/gsocket to override defaults
+[ -r /etc/sysconfig/$NAME ] && . /etc/sysconfig/$NAME
+
+# Don't do anything if nothing is installed
+[ -x ${NN_PATH} ] || exit 0
+# exit if logpath dir is not created.
+[ -x ${LOGPATH} ] || exit 0
+
+DAEMON_OPTS="--check $NAME"
+
+# Set additional options, if any
+[ ! -z "$NN_USER" ] && DAEMON_OPTS="$DAEMON_OPTS --user=${NN_USER}"
+
+start() {
+  cd ${NN_HOME}
+  echo -n "Starting ${SERVICENAME}: "
+  daemon $DAEMON_OPTS "${NN_PATH} web > ${LOGFILE} 2>&1 &"
+  RETVAL=$?
+  echo
+  [ $RETVAL = 0 ] && touch ${LOCKFILE}
+        
+  return $RETVAL
+}
+
+stop() {
+  cd ${NN_HOME}
+        echo -n "Shutting down ${SERVICENAME}: "
+        killproc ${NAME}
+        RETVAL=$?
+        echo
+        [ $RETVAL = 0 ] && rm -f ${LOCKFILE} 
+}
+
+case "$1" in
+    start)
+        status ${NAME} > /dev/null 2>&1 && exit 0
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+        status ${NAME}
+        ;;
+    restart)
+        stop
+        start
+        ;;
+    reload)
+        stop
+        start
+        ;;
+    *)
+        echo "Usage: ${NAME} {start|stop|status|restart}"
+        exit 1
+        ;;
+esac
+exit $RETVAL

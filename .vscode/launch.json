@@ -1,0 +1,27 @@
+{
+    "version": "0.2.0",
+    "configurations": [{
+        "name": "dlv-DEBUG",
+        "type": "go",
+        "request": "launch",
+        // "mode": "exec",
+        "mode": "debug",
+        "program": "${workspaceRoot}",
+        "windows": {
+            "env": {
+                "GOPATH": "${workspaceRoot};G:/Work/GoPath"
+            }
+        },
+        "linux": {
+            "env": {
+                "GOPATH": "${env.GOPATH}:${workspaceRoot}"
+            }
+        },
+        "osx": {
+            "env": {
+                "GOPATH": "${env.GOPATH}:${workspaceRoot}"
+            }
+        },
+        "args": []
+    }]
+}

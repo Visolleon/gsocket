@@ -1,0 +1,37 @@
+{
+    // See http://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "0.1.0",
+    "command": "go",
+    "isShellCommand": true,
+    "tasks": [{
+        "taskName": "build",
+        "isBuildCommand": true,
+        "args": [
+            "-i",
+            "-v"
+        ]
+    }],
+    "showOutput": "always",
+    "windows": {
+        "options": {
+            "env": {
+                "GOPATH": "G:/Work/GoPath;${workspaceRoot}"
+            }
+        }
+    },
+    "linux": {
+        "options": {
+            "env": {
+                "GOPATH": "${env.GOPATH}:${workspaceRoot}"
+            }
+        }
+    },
+    "osx": {
+        "options": {
+            "env": {
+                "GOPATH": "${env.GOPATH}:${workspaceRoot}"
+            }
+        }
+    }
+}
